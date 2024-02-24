@@ -2,7 +2,7 @@
 
 ## ENVX2001: Applied Statistical Methods
 
-### Lab 01
+### Lab 02
 
 Semester 1, 2024
 
