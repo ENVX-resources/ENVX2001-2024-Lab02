@@ -4850,63 +4850,7 @@ Learning outcomes
 <div class="no-row-height column-margin column-container"><div class>
 <p><sup>1</sup>Karunaratne S. B., Bishop T. F. A., Odeh I. O. A., Baldock J. A., Marchant B. P. (2014) Estimating change in soil organic carbon using legacy data as the baseline: issues, approaches and lessons to learn. <em>Soil Research</em> <strong>52</strong>, 349-365.</p>
 </div></div><div class="cell">
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">use</th>
-<th style="text-align: right;">n</th>
-<th style="text-align: right;">mean</th>
-<th style="text-align: right;">variance</th>
-<th style="text-align: right;">percent_area</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Forest</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">0.65</td>
-<td style="text-align: right;">1.4</td>
-<td style="text-align: right;">20</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Dryland Cropping</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">0.96</td>
-<td style="text-align: right;">0.4</td>
-<td style="text-align: right;">35</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Pasture-Vertosol</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">1.06</td>
-<td style="text-align: right;">0.8</td>
-<td style="text-align: right;">35</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Pasture-Other</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1.31</td>
-<td style="text-align: right;">0.4</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Irrigated</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0.78</td>
-<td style="text-align: right;">0.8</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Overall</td>
-<td style="text-align: right;">44</td>
-<td style="text-align: right;">0.92</td>
-<td style="text-align: right;">1.0</td>
-<td style="text-align: right;">100</td>
-</tr>
-</tbody>
-</table>
-</div>
+
 </div>
 <p>Recall that the confidence interval for the mean is an effective way to communicate the precision of the estimates (how well we know the true mean), and is derived from the standard error of the mean.</p>
 <section id="calculating-the-95-confidence-interval-of-the-mean" class="level3 page-columns page-full" style="color:navy;">
@@ -4986,57 +4930,19 @@ Important
 <p>Tip: you can manipulate the object and subset specific rows, columns or cells using <code>$</code> and <code>[]</code> respectively. For example, to access the <code>mean</code> column of the <code>carbon</code> dataset, you can use <code>carbon$mean</code>. To access the mean value for the <code>Forest</code> stratum, you can use <code>carbon$mean[1]</code>.</p>
 </div></div><p>Finally, the 95% CI can be calculated using the following:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% CI = weighted mean ± (t_crit * SE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution 1
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Weighted mean:</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>weighted_mean <span class="ot">&lt;-</span> <span class="fu">weighted.mean</span>(stratified<span class="sc">$</span>mean, stratified<span class="sc">$</span>percent_area)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># t-crit value for a 95% CI</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>degrees_freedom <span class="ot">&lt;-</span> <span class="fu">sum</span>(stratified<span class="sc">$</span>n) <span class="sc">-</span> <span class="fu">nrow</span>(stratified)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>tcrit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> degrees_freedom)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># SE of the mean: variance/n * weight^2</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>weight <span class="ot">&lt;-</span> stratified<span class="sc">$</span>percent_area <span class="sc">/</span> <span class="dv">100</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>weighted_var_mean <span class="ot">&lt;-</span> stratified<span class="sc">$</span>variance <span class="sc">/</span> stratified<span class="sc">$</span>n <span class="sc">*</span> weight<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>SE_mean <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>(weighted_var_mean))</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% CI</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>ci_stratified <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> weighted_mean,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">L95 =</span> weighted_mean <span class="sc">-</span> (tcrit <span class="sc">*</span> SE_mean),</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">U95 =</span> weighted_mean <span class="sc">+</span> (tcrit <span class="sc">*</span> SE_mean)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>ci_stratified</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    mean      L95      U95 
-0.946800 0.677712 1.215888 </code></pre>
-</div>
-</div>
-</div>
-</div>
 </section>
 </section>
 </section>
 <section id="exercise-2---soil-carbon-what-if" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-2---soil-carbon-what-if">Exercise 2 - Soil carbon: what if…?</h2>
 <p><strong><em>What if the authors had used simple random sampling?</em></strong> Below is the data object <code>overall</code> which contains the overall mean and variance of the soil carbon content for the entire catchment. It is also the last row of the table above.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>overall <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">use =</span> <span class="st">&quot;Overall&quot;</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="dv">44</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fl">0.92</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">variance =</span> <span class="dv">1</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_area =</span> <span class="dv">100</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>overall <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">use =</span> <span class="st">&quot;Overall&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="dv">44</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fl">0.92</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">variance =</span> <span class="dv">1</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_area =</span> <span class="dv">100</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Calculating the 95% CI for the mean using simple random sampling is similar to the stratified random sampling. The only difference is that the variance of the mean is calculated using the overall variance and sample size.</p>
 <p><span class="math display">Var(\bar y) = \frac{Var(y)}{n}</span></p>
 <p>where <span class="math inline">Var(y)</span> is the variance of the entire dataset and <span class="math inline">n</span> is the total number of samples.</p>
@@ -5046,57 +4952,11 @@ Solution 1
 <section id="question-2" class="level4" style="color:#e64626;">
 <h4 style="color:#e64626;" class="anchored" data-anchor-id="question-2">Question 2</h4>
 <p>Estimate the mean and associated 95% CI assuming <strong>simple random sampling</strong> using the <code>overall</code> dataset, recalling that:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% CI = mean ± (t_crit * SE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution 2
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean value is already given</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the variance of the mean</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>var_mean <span class="ot">&lt;-</span> overall<span class="sc">$</span>variance <span class="sc">/</span> overall<span class="sc">$</span>n</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the t-critical value for a 95% confidence interval</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>tcrit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> overall<span class="sc">$</span>n <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the confidence interval</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ci_overall <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> overall<span class="sc">$</span>mean,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">L95 =</span> overall<span class="sc">$</span>mean <span class="sc">-</span> tcrit <span class="sc">*</span> <span class="fu">sqrt</span>(var_mean),</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">U95 =</span> overall<span class="sc">$</span>mean <span class="sc">+</span> tcrit <span class="sc">*</span> <span class="fu">sqrt</span>(var_mean)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>ci_overall</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     mean       L95       U95 
-0.9200000 0.6159722 1.2240278 </code></pre>
-</div>
-</div>
-</div>
-</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% CI = mean ± (t_crit * SE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="question-3" class="level4" style="color:#e64626;">
 <h4 style="color:#e64626;" class="anchored" data-anchor-id="question-3">Question 3</h4>
 <p>Would you recommend stratified random sampling for future surveys? Provide evidence from the results of questions 2 and 3.</p>
-</section>
-<section id="solution-3" class="level4" style="color:green;">
-<h4 style="color:green;" class="anchored" data-anchor-id="solution-3">Solution 3</h4>
-<p>Yes, the 95% CI is smaller, albeit marginally when stratified random sampling is adopted. Another metric is the efficiency of stratification which is:</p>
-<p><span class="math display">\frac{Var\left(\overline{y}_{SiR}\right)}{Var\left(\overline{y}_{StR}\right)}=\frac{0.02273}{0.01770}=1.28</span></p>
-<p>or, in R:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(var_mean) <span class="sc">/</span> <span class="fu">sum</span>(weighted_var_mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.284156</code></pre>
-</div>
-</div>
-<p>The results show that stratified random sampling is 1.28 times more efficient than simple random sampling. This means that to achieve the same level of precision, simple random sampling would require approximately 1.28 times more samples than stratified random sampling. So to achieve the same precision with simple random sampling, we would need approximately <span class="math inline">1.28 * 44 = 57</span> samples.</p>
 </section>
 </section>
 <section id="exercise-3---kangaroos" class="level2 page-columns page-full">
@@ -5130,9 +4990,9 @@ Solution 2
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">3</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>rerun <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">9</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>kangaroos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(baseline, rerun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rerun <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">9</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>kangaroos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(baseline, rerun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="question-4" class="level4" style="color:#e64626;">
@@ -5142,23 +5002,6 @@ Solution 2
 <li>we resample the same locations in the repeat survey?</li>
 <li>we sample at different locations in the repeat survey?</li>
 </ol>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution 4
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ol type="a">
-<li>When we resample the same locations, we include the covariance term which describes the relationship between the observations in the 2 surveys. This will reduce the variance of the change in mean, and hence the 95% CI will be narrower.</li>
-<li>When we sample at different locations, we assume the covariance is equal to 0. This will increase the variance of the change in mean, and hence the 95% CI will be wider.</li>
-</ol>
-<p>Therefore, intuitively we should always sample at the same location for both surveys, but whether we do or not will depend on the experimental design and the research question!</p>
-</div>
-</div>
 </section>
 </section>
 <section id="different-locations" class="level3">
@@ -5171,61 +5014,20 @@ Solution 4
 <p>You will need to calculate <span class="math inline">{Var}\left(\Delta\left(\bar{y}_1\right)\right)</span>, <span class="math inline">Var\left(\Delta\left(\bar{y}_2\right)\right)</span>, and <span class="math inline">Cov\left(\bar{y}_1,\bar{y}_2\right)</span>.</p>
 <p>As a starting point R script for calculating the covariance and variance for the <strong>observations</strong> is below, as is the code to calculate the t critical value (<span class="math inline">t_{df}^{0.025}</span>). When we sample at different locations between surveys: <span class="math display">df = n_{1}+ n_{2} - 2 = 5 + 5 - 2 = 8</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to isolate data from the two sampling periods:</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="ot">&lt;-</span> kangaroos<span class="sc">$</span>baseline</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> kangaroos<span class="sc">$</span>rerun</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: functions below are not assigned to objects.</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># To calculate covariance:</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(t0, t2)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># To calculate variances:</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(t0)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(t2)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># t-critical value for a 95% CI with 8 degrees of freedom:</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution 5
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Since we sample different locations in the repeat survey the covariance is equal to 0.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign the  data to objects t0 and t2</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="ot">&lt;-</span> kangaroos<span class="sc">$</span>baseline</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> kangaroos<span class="sc">$</span>rerun</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the critical value for a 95% confidence interval using the t-distribution with 8 degrees of freedom</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>tcrit1 <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">8</span>)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the mean difference between t2 and t0</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>delta_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(t2) <span class="sc">-</span> <span class="fu">mean</span>(t0)</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the variance of t2 and t0 and divide by their respective sample sizes</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>V_delta_mean <span class="ot">&lt;-</span> <span class="fu">var</span>(t2) <span class="sc">/</span> <span class="fu">length</span>(t2) <span class="sc">+</span> <span class="fu">var</span>(t0) <span class="sc">/</span> <span class="fu">length</span>(t0)</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the lower bound of the 95% confidence interval</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>L95 <span class="ot">&lt;-</span> delta_mean <span class="sc">-</span> tcrit1 <span class="sc">*</span> <span class="fu">sqrt</span>(V_delta_mean)</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the upper bound of the 95% confidence interval</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>U95 <span class="ot">&lt;-</span> delta_mean <span class="sc">+</span> tcrit1 <span class="sc">*</span> <span class="fu">sqrt</span>(V_delta_mean)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> delta_mean, <span class="at">L95 =</span> L95, <span class="at">U95 =</span> U95)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     mean       L95       U95 
- 8.600000  5.794625 11.405375 </code></pre>
-</div>
-</div>
-<p>Therefore the mean change is 8.6 and the 95% CI is [5.79,11.41].</p>
-</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to isolate data from the two sampling periods:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>t0 <span class="ot">&lt;-</span> kangaroos<span class="sc">$</span>baseline</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> kangaroos<span class="sc">$</span>rerun</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: functions below are not assigned to objects.</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># To calculate covariance:</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(t0, t2)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># To calculate variances:</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(t0)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(t2)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># t-critical value for a 95% CI with 8 degrees of freedom:</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -5240,50 +5042,10 @@ Solution 5
 <p>Note: when we sample at same locations between surveys the <em>df</em> = number of paired sites - 1 = 5 - 1 = 4.</p>
 </div></div><p>Hint: the following formulae are used:</p>
 <p><span class="math display">\Delta \bar y = \bar y_2 - \bar y_1</span> <span class="math display">Var(\Delta \bar y) = Var( \bar y_2) + Var( \bar y_1) - 2 \times Cov(\bar y_1, \bar y_2)</span></p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution 6
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Since we sample at the same locations we have to include the covariance term.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tcrit2 <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">4</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>delta_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(t2) <span class="sc">-</span> <span class="fu">mean</span>(t0)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>V_delta_mean <span class="ot">&lt;-</span> <span class="fu">var</span>(t2) <span class="sc">/</span> <span class="fu">length</span>(t2) <span class="sc">+</span> <span class="fu">var</span>(t0) <span class="sc">/</span> <span class="fu">length</span>(t0) <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="fu">cov</span>(t0, t2) <span class="sc">/</span> <span class="fu">length</span>(t0))</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>L95 <span class="ot">&lt;-</span> delta_mean <span class="sc">-</span> tcrit2 <span class="sc">*</span> <span class="fu">sqrt</span>(V_delta_mean)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>U95 <span class="ot">&lt;-</span> delta_mean <span class="sc">+</span> tcrit2 <span class="sc">*</span> <span class="fu">sqrt</span>(V_delta_mean)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> delta_mean, <span class="at">L95 =</span> L95, <span class="at">U95 =</span> U95)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     mean       L95       U95 
- 8.600000  5.245209 11.954791 </code></pre>
-</div>
-</div>
-<p>Therefore the mean change is 8.6 and the 95% CI is [5.25,11.95].</p>
-</div>
-</div>
 </section>
 <section id="question-7" class="level4" style="color:#e64626;">
 <h4 style="color:#e64626;" class="anchored" data-anchor-id="question-7">Question 7</h4>
 <p>Was there a significant change in the mean number of kangaroos between the study period, if we assume the same locations were resampled, or if different locations were sampled?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution 7
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If the 95% CI does not include 0 we can reject the null hypothesis and state that there is a significant change in the mean kangaroo numbers between the 2 survey times. This would be true for both scenarios.</p>
-</div>
-</div>
 </section>
 </section>
 <section id="putting-it-together" class="level3">
@@ -5294,20 +5056,6 @@ Solution 7
 <section id="question-8" class="level4" style="color:#e64626;">
 <h4 style="color:#e64626;" class="anchored" data-anchor-id="question-8">Question 8</h4>
 <p>In the future, would you re-sample the same sites, or visit new sites in a kangaroo monitoring program of the same woodland?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution 8
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>In this case, it would be better to resample the same locations as the baseline survey. This is because the 95% CI is narrower, and hence the precision of the estimate is higher. This means that we can detect smaller changes in the mean number of kangaroos between surveys.</p>
-<p>Note that the rationale here is that we are assuming that the same locations are representative of the woodland as a whole. If this is not the case, then we would need to consider a different approach.</p>
-</div>
-</div>
 </section>
 </section>
 </section>
@@ -5319,27 +5067,6 @@ Solution 8
 <section id="question-9" class="level4" style="color:#e64626;">
 <h4 style="color:#e64626;" class="anchored" data-anchor-id="question-9">Question 9</h4>
 <p>Compare the 95% CI for each scenario between the <code>t.test()</code> results and the ones you calculated manually. Are they same?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution 9
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-sample t-test</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(t2, t0, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Paired t-test</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(t2, t0, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The 95% CI for the two-sample <span class="math inline">t</span>-test is 5.7946249, 11.4053751 and for the paired <span class="math inline">t</span>-test is 5.2452086, 11.9547914.</p>
-<p>The results are identical to the ones we calculated manually.</p>
-</div>
-</div>
 </section>
 </section>
 <section id="thanks" class="level2">
